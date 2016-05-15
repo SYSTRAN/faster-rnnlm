@@ -19,7 +19,7 @@ To train a simple model with GRU hidden unit and Noise Contrastive Estimation, u
 
    `./rnnlm -rnnlm model_name -train train.txt -valid validation.txt -hidden 128 -hidden-type gru -nce 20 -alpha 0.01`
 
-Files train.txt and test.txt must contain one sentence per line. All distinct words that are found in the training file will be used for the nnet vocab, their counts will determine Huffman tree structure and remain fixed for this nnet. If you prefer using limited vocabulary (say, top 1 million words) you should map all other words to <unk> or another token of your choice. Limited vocabulary is usually a good idea if it helps you to have enough training examples for each word.
+Files train.txt and test.txt must contain one sentence per line. All distinct words that are found in the training file will be used for the nnet vocab, their counts will determine Huffman tree structure and remain fixed for this nnet. If you prefer using limited vocabulary (say, top 1 million words) you should map all other words to &lt;unk&gt; or another token of your choice. Limited vocabulary is usually a good idea if it helps you to have enough training examples for each word.
 
 To apply the model use following command:
 
@@ -114,7 +114,7 @@ Just as in the case of PTB, 5 samples is enough for NCE to significantly outperf
 
 One important property of RNNLM models is that they are complementary to standard N-gram LM.
 One way to achieve this is to train maxent model as a part of the neural network mode.
-That could be achieved by --direct and --direct-order options.
+That could be achieved by `--direct` and `--direct-order` options.
 Another way to achieve the same effect is to use external language model.
 We use Interpolated KN 5-gram model that is shipped with the benchmark.
 
@@ -139,11 +139,11 @@ All modes require model name:
       Path to model file
 ```
 
-Will create <file> and <file>.nnet files (for storing vocab/counts in the text form and the net itself in binary form).
-If the <file> and <file>.nnet already exist, the tool will attempt to load them instead of starting new training.
-If the <file> exists and <file>.nnet doesn't, the tool will use existing vocabulary and new weights.
+Will create `<file>` and `<file>.nnet` files (for storing vocab/counts in the text form and the net itself in binary form).
+If the `<file>` and `<file>.nnet` already exist, the tool will attempt to load them instead of starting new training.
+If the `<file>` exists and `<file>.nnet` doesn't, the tool will use existing vocabulary and new weights.
 
-To run program in test mode, you must provide test file. If you use NCE and would like to calculate entropy, you must use --nce_accurate_test flag. All other options are ignored in apply mode
+To run program in test mode, you must provide test file. If you use NCE and would like to calculate entropy, you must use `--nce_accurate_test` flag. All other options are ignored in apply mode
 
 ```
     --test <file>
@@ -270,7 +270,7 @@ Let `ratio' be a ratio of previous epoch validation entropy to new one.
     Stop training once `ratio' has hit `stop' at least `retry' times (default: 2)
 ```
 
-Noise Contrastive Estimation is used iff number of noise samples (--nce option) is greater then zero.
+Noise Contrastive Estimation is used if number of noise samples (`--nce` option) is greater then zero.
 Otherwise HS is used.
 Reasonable value for nce is 20.
 
@@ -333,7 +333,7 @@ Of course, if you don't have GPU, you can use CPU to calculate entropy, but it w
   - Usually NCE works better then HS in terms of both PPL and WER.
   - Direct connections could dramatically improve model quality. Especially in case of HS. Reasonable values to start from are `-direct 1000 -direct-order 4`.
   - The model will be written to file after a training epoch if and only if its validation entropy improved compared to the previous epoch.
-  - It is a good idea to shuffle sentences in the set before splitting them into training and validation sets (GNU shuf & split are one of the possible choices to do it). For huge datasets use --epoch-per-file option.
+  - It is a good idea to shuffle sentences in the set before splitting them into training and validation sets (GNU shuf & split are one of the possible choices to do it). For huge datasets use `--epoch-per-file` option.
 
 
 ## References

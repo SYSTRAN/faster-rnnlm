@@ -36,7 +36,7 @@ const bool kHaveCudaSupport = false;
 const bool kHaveCudaSupport = true;
 #endif
 const int64_t kReportEveryWords = 50000;
-const OOVPolicy kOOVPolicy = kSkipSentence;
+OOVPolicy kOOVPolicy = kSkipSentence;
 
 // Run time learning parameters
 // Constant outside main
@@ -720,6 +720,11 @@ int main(int argc, char **argv) {
   if (has_vocab) {
     vocab.Load(model_vocab_file);
     fprintf(stderr, "Read the vocabulary: %d words\n", vocab.size());
+    // if it has unknow support switch to 
+    if (vocab.GetIndexByWord("<unk>") != Vocabulary::kWordOOV) {
+      fprintf(stderr, "Model has <unk> token - enabling convert to <unk> for OOV\n");
+      kOOVPolicy = kConvertToUnk;
+    }
   } else {
     vocab.BuildFromCorpus(train_file, show_progress);
     vocab.AdjustSizeForSoftmaxTree(hs_arity);
